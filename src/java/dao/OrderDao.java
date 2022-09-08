@@ -108,16 +108,16 @@ public class OrderDao {
 //        return bookIDs;
 //    }
     
-    public void addChangeToOrder(Order order, int bookID, int quantity) {
+    public void addChangeToOrder(Order order, Book book, int quantity) {
         System.out.println(ADD_ORDER);
-        int sl = orderExisted(order.getId(), bookID);
+        int sl = orderExisted(order.getId(), book.getId());
         String query = (sl==-1 ? ADD_ORDER : UPDATE_ORDER);
-        int new_sl = (sl==-1 ? quantity : quantity+sl);
+        int new_sl = (sl==-1 ? quantity : (quantity+sl<=book.getQuantity()? quantity+sl : book.getQuantity()));
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, new_sl);
             preparedStatement.setInt(2, order.getId());
-            preparedStatement.setInt(3, bookID);
+            preparedStatement.setInt(3, book.getId());
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

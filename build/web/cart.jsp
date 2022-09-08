@@ -138,10 +138,10 @@
                                 <div style="display: flex">
                                 <form id="formAction${book.key.id}" action="" method="post">
                                     <div class="value-button" id="decrease" onclick="decreaseValue(${book.key.id})" value="Decrease Value">-</div>
-                                    <input type="number" id="number${book.key.id}" name="quantity${book.key.id}" class="quantity" value="${book.value}" onkeypress="onChangeBtn(${book.key.id})"/>
+                                    <input type="number" id="number${book.key.id}" name="quantity${book.key.id}" class="quantity" value="${book.value}" onkeypress="onChangeBtn(${book.key.id}, ${book.key.quantity})"/>
                                     <div class="value-button" id="increase" onclick="increaseValue(${book.key.id}, ${book.key.quantity})" value="Increase Value">+</div>
                                     <button type="submit" class="btn btn-danger" style="display: inline-block; margin-left: 5px" onclick="onClickRemove(${book.key.id})">Remove</button>
-                                    <button type="submit" id="btnShow${book.key.id}" class="btn btn-success" style="display: none; margin-left: 5px" onclick="onClickUpdate(${book.key.id})">Save</button>
+                                    <button type="submit" id="btnShow${book.key.id}" class="btn btn-success" style="display: none; margin-left: 5px" onclick="onClickUpdate(${book.key.id}, ${book.key.quantity})">Save</button>
                                   </form>
                                 </div>
                             </td>
@@ -171,10 +171,11 @@
             document.getElementById('number'+val).value = value;
           }
         
-        function onChangeBtn(val) {
+        function onChangeBtn(val, max_num) {
             var value = parseInt(document.getElementById('number'+val).value, 10);
             value = isNaN(value) ? 1 : value;
             value < 1 ? value = 1 : '';
+            value > max_num ? value = max_num : '';
             document.getElementById('number'+val).value = value;
             document.getElementById('btnShow'+val).style.display="inline-block";
           }
@@ -187,9 +188,14 @@
             value--;
             document.getElementById('number'+val).value = value;
           }
-        function onClickUpdate(val){
-            var quantity = document.getElementById("number"+val).value;
-            document.getElementById("formAction"+val).action = "<%=request.getContextPath()%>/cart/save?order_id=${orderID};book_id="+val+";quantity="+quantity;
+        function onClickUpdate(val, max_num){
+//            var quantity = document.getElementById("number"+val).value;
+            var value = parseInt(document.getElementById('number'+val).value, 10);
+            value = isNaN(value) ? 1 : value;
+            value < 1 ? value = 1 : '';
+            value > max_num ? value = max_num : '';
+            document.getElementById('number'+val).value = value;
+            document.getElementById("formAction"+val).action = "<%=request.getContextPath()%>/cart/save?order_id=${orderID};book_id="+val+";quantity="+value;
         }
         
         function onClickRemove(val){

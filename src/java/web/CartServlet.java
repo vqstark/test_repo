@@ -149,7 +149,7 @@ public class CartServlet extends HttpServlet {
             orderDao.createOrder(newOrder);
             unconfirmedOrder = orderDao.findUnconfirmOrderByUserID(loginedUser);
         }
-        orderDao.addChangeToOrder(unconfirmedOrder, bookID, Integer.parseInt(quantity));
+        orderDao.addChangeToOrder(unconfirmedOrder, bookDao.selectBook(bookID), Integer.parseInt(quantity));
         response.sendRedirect(request.getContextPath()+"/app/");
     }
 }

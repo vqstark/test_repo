@@ -6,7 +6,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -16,16 +18,16 @@ public class Order {
     private int id;
     private User user;
     private double total;
-    private List<Book> books;
+    private Map<Book, Integer> books;
     private String status;
 
     public Order() {
         total = 0;
-        books = new ArrayList<>();
+        books = new HashMap<>();
         status = "unconfirmed";
     }
     
-    public Order(int id, User user, double total, List<Book> books, String status) {
+    public Order(int id, User user, double total, Map<Book, Integer> books, String status) {
         this.id = id;
         this.user = user;
         this.total = total;
@@ -37,7 +39,7 @@ public class Order {
         this.id = id;
         this.user = user;
         this.total = total;
-        this.books = new ArrayList<>();
+        this.books = new HashMap<>();
         this.status = status;
     }
 
@@ -49,8 +51,6 @@ public class Order {
         this.status = status;
     }
     
-    
-
     public int getId() {
         return id;
     }
@@ -75,13 +75,11 @@ public class Order {
         this.total = total;
     }
 
-    public List<Book> getBooks() {
+    public Map<Book, Integer> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Map<Book, Integer> books) {
         this.books = books;
     }
-    
-    
 }
